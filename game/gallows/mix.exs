@@ -32,7 +32,7 @@ defmodule Gallows.Mixfile do
       {:gettext, "~> 0.11"},
       {:cowboy, "~> 1.0"},
 
-      {:hangman, [ path: "../game/hangman"]},
+      {:hangman, [ path: "../hangman"]},
     ]
   end
 end

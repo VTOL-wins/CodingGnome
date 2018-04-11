@@ -2,33 +2,48 @@ import {Socket} from "phoenix"
 
 export default class HangmanSocket {
 
-    constructor() {
+    constructor(tally) {
+        this.tally = tally
         this.socket = new Socket("/socket", {})
         this.socket.connect()
     }
 
     connect_to_hangman() {
         this.setup_channel()
-        this.channel.on("tally", tally => {
-            console.dir(tally)
-        })
     }
 
     setup_channel(){
         this.channel = this.socket.channel("hangman:game", {})
+        this.channel.on("tally", (tally) => {
+            this.copy_tally(tally)
+        })
         this.channel
             .join()
             .receive("ok", resp => {
-                console.log("connected: " + resp)
+                console.log("Joined Successfully", resp)
                 this.fetch_tally()
             })
             .receive("error", resp => {
-                alert(resp)
+                alert("Unable to join", resp)
                 throw(resp)
             })
     }
 
     fetch_tally() {
         this.channel.push("tally", {})
+    }
+
+    make_move(guess) {
+        this.channel.push("make_move", guess)
+    }
+
+    new_game() {
+        this.channel.push("new_game", {})
+    }
+    
+    copy_tally(from) {
+        for (let k in from) {
+            this.tally[k] = from[k]
+        }
     }
 }

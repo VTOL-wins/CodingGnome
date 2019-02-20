@@ -12,7 +12,7 @@ defmodule Hangman.Game do
       letters: word |> String.codepoints
     }
   end
-  
+
   def new_game() do
     new_game(Dictionary.random_word)
   end
@@ -75,10 +75,10 @@ defmodule Hangman.Game do
 
   defp reveal_letter(letter, _in_word = true),  do: letter
   defp reveal_letter(_letter, _not_in_word),    do: "_"
-  
+
   defp maybe_won(true), do: :won
   defp maybe_won(_),    do: :good_guess
 
   defp return_with_tally(game), do: { game, tally(game) }
-  
+
 end
